@@ -113,8 +113,8 @@ function OBJforGeometry(geom) {
     obj += 'usemtl ' + MTLNameForGeometry(geom) + nl;
     obj += 's on' + nl;
     var exist = {
-        normals: info.normals.length != 0,
-        texCoords: info.texCoords.length != 0,
+        normals: info.normals.length !== 0,
+        texCoords: info.texCoords.length !== 0,
     };
     for (i = 0; i < info.primitives.length; ++i) {
         var primitive = info.primitives[i];
@@ -165,7 +165,7 @@ var textureMTLMap = {
 // source: http://stackoverflow.com/a/3820412
 function baseName(str)
 {
-   var base = new String(str).substring(str.lastIndexOf('/') + 1); 
+   var base = String(str).substring(str.lastIndexOf('/') + 1); 
     if(base.lastIndexOf(".") != -1)       
         base = base.substring(0, base.lastIndexOf("."));
    return base;
@@ -177,21 +177,21 @@ function ext(str) {
 
 function textureInfoForGeometry(geom) {
     var textureMap = [];
-    if (stateset = geom.stateset) {
-        if (textures = stateset.textureAttributeMapList) {
+    if (stateset == geom.stateset) {
+        if (textures == stateset.textureAttributeMapList) {
             textures.forEach(function(texture) {
-                if (Texture = texture.Texture) {
-                    if (object = Texture._object) {
-                        if (texture = object._texture) {
-                            if (imageProxy = texture._imageProxy) {
+                if (Texture == texture.Texture) {
+                    if (object == Texture._object) {
+                        if (texture == object._texture) {
+                            if (imageProxy == texture._imageProxy) {
                                 var textureURL = imageProxy.attributes.images[0].url;
-                                var texture = {
+                                var texture1 = {
                                     url: textureURL,
                                     type: textureMTLMap[object._channelName],
                                     ext: ext(textureURL)
                                 };
-                                texture.filename = textureFilename(geom, texture);
-                                textureMap.push(texture);
+                                texture1.filename = textureFilename(geom, texture1);
+                                textureMap.push(texture1);
                             }   
                         }
                     }
@@ -242,7 +242,7 @@ var observeDOM = (function(){
             obj.addEventListener('DOMNodeInserted', callback, false);
             obj.addEventListener('DOMNodeRemoved', callback, false);
         }
-    }
+    };
 })();
 
 
@@ -258,13 +258,13 @@ var foundOsgScript = false;
 
 observeDOM(document.body, function(){ 
     if (!foundOsgScript) {
-    	if (osgScript = getElementByXpath(osgScriptElementPath)) { 
+    	if (osgScript == getElementByXpath(osgScriptElementPath)) { 
            overrideDrawImplementation();
            foundOsgScript = true;
     	}
     }
     if (!addedDownloadButton) {
-        if (downloadButtonParent = getElementByXpath(downloadButtonParentXPath))
+        if (downloadButtonParent == getElementByXpath(downloadButtonParentXPath))
         {
             setTimeout(function () {
                 addDownloadButton(downloadButtonParent);
@@ -286,7 +286,7 @@ function downloadString(filename, ext, str) {
     var downloadLink = document.createElement("a");
     downloadLink.download = fileNameToSaveAs;
     downloadLink.innerHTML = "Download File";
-    if (window.webkitURL != null)
+    if (window.webkitURL !== null)
     {
         // Chrome allows the link to be clicked
         // without actually adding it to the DOM.
@@ -321,7 +321,7 @@ function downloadFileAtURL(fileURL) {
 }
 
 function downloadModels() {
-    if (models.length == 0) {
+    if (models.length === 0) {
     	alert("Download script failed... try refreshing the page");
         return;
     }
